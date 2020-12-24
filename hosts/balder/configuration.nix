@@ -10,6 +10,10 @@
       ./hardware-configuration.nix
       /home/matt/code/github.com/mattmeyers/nixos_configs/common/users
     ];
+  
+  # Required for steam to work
+  hardware.opengl.driSupport32Bit = true;
+  hardware.opengl.extraPackages32 = with pkgs.pkgsi686Linux; [ libva ];
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
@@ -29,7 +33,7 @@
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
   
   fonts = {
-    enableFontDir = true;
+    fontDir.enable = true;
     fonts = with pkgs; [
       terminus
       font-awesome-ttf
@@ -46,14 +50,18 @@
   # Set your time zone.
   time.timeZone = "America/New_York";
 
+  nixpkgs.config.allowUnfree = true;
+
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     wget
     git
     vim
-    mage
+    gnumake
+    evince
     firefox
+    steam
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
